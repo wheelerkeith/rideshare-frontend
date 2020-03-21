@@ -22,7 +22,8 @@ export class DriverListComponent implements OnInit {
   mapProperties :{};
   availableCars : Array<any> = [];
   drivers : Array<any> = [];
-
+  arr = [];
+  reverseClicked = false;
 
   @ViewChild('map',null) mapElement: any;
   map: google.maps.Map;
@@ -45,11 +46,11 @@ export class DriverListComponent implements OnInit {
               });
           });
       });
-    /*this.drivers.push({'id': '1','name': 'Ed Ogeron','origin':'Reston, VA', 'email': 'ed@gmail.com', 'phone':'555-555-5555'});
-    this.drivers.push({'id': '2','name': 'Nick Saban','origin':'Oklahoma, OK', 'email': 'nick@gmail.com', 'phone':'555-555-5555'});
-    this.drivers.push({'id': '3','name': 'Bobbie sfsBowden','origin':'Texas, TX', 'email': 'bobbie@gmail.com', 'phone':'555-555-5555'});
-    this.drivers.push({'id': '4','name': 'Les Miles','origin':'New York, NY', 'email': 'les@gmail.com', 'phone':'555-555-5555'});
-    this.drivers.push({'id': '5','name': 'Bear Bryant','origin':'Arkansas, AR', 'email': 'bear@gmail.com', 'phone':'555-555-5555'});*/
+    // this.drivers.push({'id': '1','name': 'Ed Ogeron','origin':'Reston, VA', 'email': 'ed@gmail.com', 'phone':'555-555-5555'});
+    // this.drivers.push({'id': '2','name': 'Nick Saban','origin':'Oklahoma, OK', 'email': 'nick@gmail.com', 'phone':'555-555-5555'});
+    // this.drivers.push({'id': '3','name': 'Bobbie sfsBowden','origin':'Texas, TX', 'email': 'bobbie@gmail.com', 'phone':'555-555-5555'});
+    // this.drivers.push({'id': '4','name': 'Les Miles','origin':'New York, NY', 'email': 'les@gmail.com', 'phone':'555-555-5555'});
+    // this.drivers.push({'id': '5','name': 'Bear Bryant','origin':'Arkansas, AR', 'email': 'bear@gmail.com', 'phone':'555-555-5555'});
     //console.log(this.drivers);
     this.getGoogleApi();
 
@@ -64,6 +65,7 @@ export class DriverListComponent implements OnInit {
       this.displayDriversList(this.location, this.drivers);
       //show drivers on map
       this.showDriversOnMap(this.location, this.drivers);
+
     });
   }
 
@@ -116,66 +118,156 @@ displayRoute(origin, destination, service, display) {
   }
 
 
-displayDriversList(origin, drivers) {
+  displayDriversList(origin, drivers) {
+
+    let thingy = [];
+
     let  origins = [];
     //set origin
     origins.push(origin)
 
-    var outputDiv = document.getElementById('output');
+    // const outputDiv = document.getElementById('output');
+   
     drivers.forEach(element => {
 
-      var service = new google.maps.DistanceMatrixService;
-      service.getDistanceMatrix({
-        origins: origins,
-        destinations: [element.origin],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.IMPERIAL,
-        avoidHighways: false,
-        avoidTolls: false
-      }, function(response, status) {
-        if (status !== 'OK') {
-          alert('Error was: ' + status);
-        } else {
-          var originList = response.originAddresses;
-          var destinationList = response.destinationAddresses;
-          var results = response.rows[0].elements;
-          //console.log(results[0].distance.text);
-          var name =  element.name;
-          outputDiv.innerHTML += `<tr><td class="col">${name}</td>
-                                  <td class="col">${results[0].distance.text}</td>
-                                  <td class="col">${results[0].duration.text}</td>
-                                  <td class="col">
-                                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCentered${element.id}"> View</button>
-                                    <div class="col-lg-5">
-                                     <div class="modal" id="exampleModalCentered${element.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
-                                      <div class="modal-dialog modal-dialog-centered" role="document">
-                                          <div class="modal-content">
-                                              <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalCenteredLabel">Contact Info:</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                     <span aria-hidden="true">×</span>
-                                                   </button>
-                                              </div>
-                                              <div class="modal-body">
-                                                  <h1>${name}</h1>
-                                                  <h3>Email: ${element.email}</h3>         
-                                                  <h3>Phone: ${element.phone}</h3>                 
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                              </div>
+        const service = new google.maps.DistanceMatrixService;
+        
+        service.getDistanceMatrix(
+          {
+            origins: origins,
+            destinations: [element.origin],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+            avoidHighways: false,
+            avoidTolls: false
+          }, 
+          function(response, status) {
+            if (status !== 'OK') {
+              alert('Error was: ' + status);
+            } else {
+              let originList = response.originAddresses;
+              let destinationList = response.destinationAddresses;
+              let results = response.rows[0].elements;
+              let name =  element.name;
+
+              const temp = {
+                "html": `<tr><td class="col">${name}</td>
+                                      <td class="col">${results[0].distance.text}</td>
+                                      <td class="col">${results[0].duration.text}</td>
+                                      <td class="col">
+                                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCentered${element.id}"> View</button>
+                                        <div class="col-lg-5">
+                                        <div class="modal" id="exampleModalCentered${element.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <h5 class="modal-title" id="exampleModalCenteredLabel">Contact Info:</h5>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                      </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <h1>${name}</h1>
+                                                      <h3>Email: ${element.email}</h3>         
+                                                      <h3>Phone: ${element.phone}</h3>                 
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                  </div>
+                                                </div>
                                             </div>
-                                         </div>
-                                       </div>
-                                  </div>
-                                  <div class="col-lg-6">
-                                      <div #maps id="gmap" class="img-responsive"></div>
-                                  </div>
-                                </td></tr>`;
-      }
-    });
-    
-   });
-}
+                                          </div>
+                                      </div>
+                                      <div class="col-lg-6">
+                                          <div #maps id="gmap" class="img-responsive"></div>
+                                      </div>
+                                    </td></tr>`,
+                "time": results[0].duration.value,
+              }
+
+              // console.log(temp.time);
+
+              thingy.push(temp);
+              this.arr = thingy;
+            } // else
+          }
+        ) // distance matrix param
+      } // anon func
+    ) // for each
+
+    this.sleep(2000).then(() => {
+        thingy = this.quickSort(thingy, true);
+        this.sleep(1000).then(() => {
+          this.show(thingy);
+          this.arr = thingy;
+        })
+    })
+  } //display function
+
+  show(arr) {
+    let outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = "";
+    arr.forEach(ele => {
+      outputDiv.innerHTML += ele["html"];
+    })
+
+  }
+
+  reverse() {
+    if(this.reverseClicked === false) {
+      this.reverseClicked = true;
+      this.arr = this.quickSort(this.arr, false);
+    } else {
+      this.reverseClicked = false;
+      this.arr = this.quickSort(this.arr, true);
+    }
+      
+    this.sleep(2000).then(() => {
+      this.show(this.arr);
+    })
+  }
+
+  quickSort(array, desc) {
+  
+    if (array.length <= 1) return array;
+
+    let pivot = array.shift();
+
+    let left=[];
+    let right=[];
+
+    if(desc === true) {
+      left = array.filter(el => {
+        return parseInt(el["time"]) < parseInt(pivot["time"]);
+      })
+      right = array.filter(el => {
+        return parseInt(el["time"]) >= parseInt(pivot["time"]);
+      });
+    } else {
+      left = array.filter(el => {
+        return parseInt(el["time"]) > parseInt(pivot["time"]);
+      })
+      right = array.filter(el => {
+        return parseInt(el["time"]) <= parseInt(pivot["time"]);
+      });
+    }
+
+
+    // right is larger numbers or equal
+    // left is strictly less than pivot
+
+    let leftSorted = this.quickSort(left, desc);
+    let rightSorted = this.quickSort(right, desc);
+
+    // console.log("left: " + leftSorted);
+    // console.log("right: " + rightSorted);
+
+    // console.log("... : " + [...rightSorted]);
+
+    // console.log(pivot);
+    console.log([...leftSorted, pivot, ...rightSorted])
+
+    return [...leftSorted, pivot, ...rightSorted];
+  }
 
 }
