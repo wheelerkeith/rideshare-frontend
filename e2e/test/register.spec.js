@@ -1,6 +1,6 @@
 
 describe('Sign Up tests', function(){
-    let elSignUpLink = element(by.xpath('//*[@id="login-form"]/p/a/signupmodal/a'));
+    let elSignUpLink = element(by.xpath('/html/body/app-root/app-home-page/div[1]/div/div/button[2]/signupmodal/a'));
     let elRegisterHeader = element(by.xpath('/html/body/modal-container/div/div/div[1]/h4'));
     let firstNameInput
     let lastNameInput
@@ -14,13 +14,13 @@ describe('Sign Up tests', function(){
     let driverRadio
     
     it('Sign up link on login page opens Sign up modal', function() {
-        browser.get('http://http://54.174.82.153:4200/login');
+        browser.get('http://localhost:4200/');
         elSignUpLink.click();
         expect(elRegisterHeader.getText()).toBe('Sign Up');
     });
 
     it ('After submit routes to landing page', function() {
-        browser.get('http://http://54.174.82.153:4200/login');
+        browser.get('http://localhost:4200/');
         elSignUpLink.click();
     });
 });
