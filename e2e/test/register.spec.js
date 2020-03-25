@@ -15,7 +15,9 @@ describe('Sign Up tests', function(){
     
     it('Sign up link on login page opens Sign up modal', function() {
         browser.get('http://localhost:4200/');
+        browser.driver.sleep(500);
         elSignUpLink.click();
+        browser.driver.sleep(500);
         expect(elRegisterHeader.getText()).toBe('Sign Up');
     });
 

@@ -24,6 +24,7 @@ describe('User logged in nav bar tests', function(){
     //checks to make sure that the login button reroutes to the correct modal
     //change when the front end is being hosted
     it('User Presses the login button and signs in as the logged in user', function(){
+        browser.get('http://localhost:4200');
         browser.driver.manage().window().setSize(xComp,y);
         elLoginButton.click();
         //These are based off of dummy data currently. Change if desired
@@ -40,8 +41,8 @@ describe('User logged in nav bar tests', function(){
     change when the front end is being hosted
     */
     it('User Presses the Driver Button and goes to the driver page on a laptop', function(){
-        browser.waitForAngular();
         browser.ignoreSynchronization=true
+        browser.waitForAngular();
         elDriverButton.click();
         //enter expected toBe text when information is gained
         expect(elDriverHeader.getText()).toBe("Driver's List");
@@ -79,7 +80,7 @@ describe('User logged in nav bar tests', function(){
         browser.waitForAngular();
         browser.ignoreSynchronization=true
         browser.driver.manage().window().setSize(xPhone,y);
-        elHamburger.click();
+        //elHamburger.click();
         browser.driver.sleep(500);
         elSearchButton.click();
         expect(elSearchHeader.getText()).toBe('Revature RideForce');
@@ -108,7 +109,7 @@ describe('User logged in nav bar tests', function(){
         browser.waitForAngular();
         browser.ignoreSynchronization=true
         browser.driver.manage().window().setSize(xPhone,y);
-        elHamburger.click();
+        //elHamburger.click();
         browser.driver.sleep(500);
         elProfileDrop.click();
         elProfileButton.click();
