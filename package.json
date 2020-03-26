@@ -32,6 +32,7 @@
     "@types/jquery": "^3.3.31",
     "@types/mocha": "^5.2.7",
     "bootstrap": "^4.4.1",
+    "e2e": "0.0.8",
     "font-awesome": "^4.7.0",
     "install": "^0.13.0",
     "jasmine": "^3.5.0",
