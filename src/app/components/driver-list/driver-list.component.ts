@@ -1,15 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user-service/user.service';
-import { AuthService } from 'src/app/services/auth-service/auth.service';
-import { Batch } from 'src/app/models/batch';
-import { Car } from 'src/app/models/car';
-import { CarService } from 'src/app/services/car-service/car.service';
-import { Router } from '@angular/router';
-import { BatchService } from 'src/app/services/batch-service/batch.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { BatchService } from '../../services/batch-service/batch.service';
+import { FilterService } from '../../services/filter-service/filter-service.service';
 
 @Component({
   selector: 'app-driver-list',
@@ -27,12 +21,17 @@ export class DriverListComponent implements OnInit {
   mapProperties: {};
   availableCars: Array<any> = [];
   drivers: Array<any> = [];
+  batches: Array<any> = [];
+  selectedBatch: number = 1;
+  selectedFilters: Array<any> = [];
+  geocoder: any;
 
 
   @ViewChild('map', null) mapElement: any;
   map: google.maps.Map;
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService,
+    private batchService: BatchService, private filterService: FilterService) { }
 
   /**
    * on init is calls on location of user
@@ -40,33 +39,38 @@ export class DriverListComponent implements OnInit {
    * @memberof DriverListComponent
    */
   ngOnInit() {
-    this.drivers = [];
-
-    this.userService.getRidersForLocation1(this.location).subscribe(
-      res => {
-        //console.log(res);
-        res.forEach(element => {
-          this.drivers.push({
-            'id': element.userId,
-            'name': element.firstName + " " + element.lastName,
-            'origin': element.hCity + "," + element.hState,
-            'email': element.email,
-            'phone': element.phoneNumber,
-            'ride': { distance: 0, duration: 0 }
-          });
-        });
-      });
+    this.batches = this.batchService.getAllBatches();
     this.getGoogleApi();
 
-    this.sleep(2000).then(() => {
+    this.sleep(2500).then(() => {
       this.mapProperties = {
         center: new google.maps.LatLng(Number(sessionStorage.getItem("lat")), Number(sessionStorage.getItem("lng"))),
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
+      this.geocoder = new google.maps.Geocoder;
       this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapProperties);
-      this.displayDriversList(this.location, this.drivers);
-      this.showDriversOnMap(this.location, this.drivers);
+
+      this.drivers = [];
+
+      this.userService.getRidersForLocation1(this.location).subscribe(
+        res => {
+          //console.log(res);
+          res.forEach(element => {
+            this.drivers.push({
+              'id': element.userId,
+              'name': element.firstName + " " + element.lastName,
+              'origin': element.hCity + "," + element.hState,
+              'email': element.email,
+              'phone': element.phoneNumber,
+              'ride': { distance: 0, duration: 0 }
+            });
+          });
+          //get all routes 
+          this.displayDriversList();
+          //show drivers on map
+          this.showDriversOnMap(this.location, this.drivers);
+        });
     });
   }
   /**
@@ -125,13 +129,11 @@ export class DriverListComponent implements OnInit {
   }
 
 
-  displayDriversList(origin, drivers) {
+  displayDriversList() {
     let origins = [];
     //set origin
-    origins.push(origin)
-
-    this.drivers = drivers.map(driver => {
-      console.log(driver);
+    origins.push(this.location)
+    for (let driver of this.drivers) {
       var service = new google.maps.DistanceMatrixService;
       service.getDistanceMatrix({
         origins: origins,
@@ -144,16 +146,34 @@ export class DriverListComponent implements OnInit {
         if (status !== 'OK') {
           alert('Error was: ' + status);
         } else {
-          // var results = response.rows[0].elements;
-          // let distance = results[0].distance.text;
-          // let duration = results[0].duration.text;
-          // driver['ride'] = { distance: distance, duration: duration };
-          console.log(response);
-          return driver;
+          let results = response.rows[0].elements;
+          let distance = results[0].distance.text;
+          let duration = results[0].duration.text;
+          driver.ride = { distance: distance, duration: duration };
         }
       });
-    });
-    console.log(this.drivers);
+    }
   }
 
+  filterDrivers() {
+    let address = "496 High St, Morgantown, 26505"
+    this.filterService.getFilteredDrivers(this.selectedFilters, address, this.selectedBatch)
+      .subscribe((response) => {
+        console.log(response["Drivers"].map(item=>{return {batch:item.batch, city:item.hCity}}));
+      });
+    /* navigator.geolocation.getCurrentPosition((position) => {
+      this.geocoder.geocode({ location: { lat: position.coords.latitude, lng: position.coords.longitude } },
+        (results, status) => {
+          if (status === 'OK') {
+            if (results[0]) {
+              let address = results[0].formatted_address;
+              this.filterService.getFilteredDrivers(this.selectedFilters, address, this.selectedBatch)
+              .subscribe((response)=>{
+                console.log(response);
+              });
+            }
+          }
+        });
+    }) */
+  }
 }
