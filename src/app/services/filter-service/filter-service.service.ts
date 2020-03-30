@@ -12,11 +12,11 @@ export class FilterService {
 
   constructor(private http: HttpClient) { }
 
-  getFilteredDrivers(filters: Array<string>, location: string, batchId: number) {
+  getFilteredDrivers(filters: Array<string>, userId: number, batchId: number) {
     return this.http.post(this.url, {
       "filterTypes": filters,
-      "location": location,
-      "batchId": `${batchId}`
+      "userId": userId,
+      "batchId": batchId
     });
   }
 }

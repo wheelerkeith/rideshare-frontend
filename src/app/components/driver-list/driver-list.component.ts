@@ -4,6 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { BatchService } from '../../services/batch-service/batch.service';
 import { FilterService } from '../../services/filter-service/filter-service.service';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
+import { User } from 'src/app/models/user';
+
+
 
 @Component({
   selector: 'app-driver-list',
@@ -12,6 +16,7 @@ import { FilterService } from '../../services/filter-service/filter-service.serv
 })
 export class DriverListComponent implements OnInit {
 
+  currentUserId: number;
   location: string = 'Morgantown, WV';
   mapProperties: {};
   availableCars: Array<any> = [];
@@ -26,11 +31,14 @@ export class DriverListComponent implements OnInit {
   map: google.maps.Map;
 
   constructor(private http: HttpClient, private userService: UserService,
-    private batchService: BatchService, private filterService: FilterService) { }
+    private batchService: BatchService, private filterService: FilterService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.batches = this.batchService.getAllBatches();
     this.getGoogleApi();
+    this.currentUserId = JSON.parse(sessionStorage.getItem("userid"));
+    
 
     this.sleep(2500).then(() => {
       this.mapProperties = {
@@ -112,7 +120,6 @@ export class DriverListComponent implements OnInit {
     });
   }
 
-
   displayDriversList() {
     let origins = [];
     //set origin
@@ -140,24 +147,10 @@ export class DriverListComponent implements OnInit {
   }
 
   filterDrivers() {
-    let address = "496 High St, Morgantown, 26505"
-    this.filterService.getFilteredDrivers(this.selectedFilters, address, this.selectedBatch)
+    console.log(this.currentUserId);
+    this.filterService.getFilteredDrivers(this.selectedFilters, this.currentUserId, this.selectedBatch)
       .subscribe((response) => {
         console.log(response["Drivers"].map(item=>{return {batch:item.batch, city:item.hCity}}));
       });
-    /* navigator.geolocation.getCurrentPosition((position) => {
-      this.geocoder.geocode({ location: { lat: position.coords.latitude, lng: position.coords.longitude } },
-        (results, status) => {
-          if (status === 'OK') {
-            if (results[0]) {
-              let address = results[0].formatted_address;
-              this.filterService.getFilteredDrivers(this.selectedFilters, address, this.selectedBatch)
-              .subscribe((response)=>{
-                console.log(response);
-              });
-            }
-          }
-        });
-    }) */
   }
 }
