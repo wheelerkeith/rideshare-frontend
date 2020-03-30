@@ -42,6 +42,7 @@ ngOnInit() {
    this.userService.getUserById2(sessionStorage.getItem("userid")).subscribe((response)=>{
       this.currentUser = response;
       this.zipcode = response.hZip;
+      console.log(this.zipcode);
       this.city = response.hCity;
       this.address = response.hAddress;
       this.address2 = response.wAddress;
