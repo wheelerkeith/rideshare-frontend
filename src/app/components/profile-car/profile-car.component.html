@@ -1,15 +1,13 @@
 <div class="container mainContainer">
-
-        <i class="fa fa-car" style="font-family:'FontAwesome';"></i>
-
-
-        <h4>Car Information:</h4>
-
+    
+    <i class="fa fa-car" style="font-family:'FontAwesome';"></i>
+    <h4>Car Information:</h4>
+    <form (submit)="onSubmit()" #carForm="ngForm">
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="make" class="col-sm-4 col-form-label">Make:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="make" [(ngModel)]=make value="{{currentCar?.make}}">
+                    <input type="text" class="form-control" id="make" [(ngModel)]=make value="{{currentCar?.make}}" name="make" required>
                 </div>
         </div>
 
@@ -17,7 +15,7 @@
                 <div class="col-sm-1"></div>
             <label for="model" class="col-sm-4 col-form-label">Model:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="model" [(ngModel)]=model value="{{currentCar?.model}}">
+                <input type="text" class="form-control" id="model" [(ngModel)]=model value="{{currentCar?.model}}" name="model" required>
             </div>
         </div>
 
@@ -41,7 +39,7 @@
             <div class="col-sm-1"></div>
                 <label for="Nrseats" class="col-sm-4 col-form-label ">Number of seats:</label>
                 <div class="col-sm-4">
-                <select class="form-control" id="Nrseats" [(ngModel)]=nrSeats value="{{currentCar?.seats}}">
+                <select class="form-control" id="Nrseats" [(ngModel)]=nrSeats value="{{currentCar?.seats}}" name="nrSeats" required>
                     <option>Choose the number of seats</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -52,8 +50,10 @@
                 <p *ngIf="success != ''" class="success">{{success}}</p>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary myBtn" (click)="onSubmit()">Save</button>
-    </div>
-
-
+        
+        <button type="submit" class="btn btn-primary myBtn" [disabled]="!(make && model && nrSeats)">Save</button>
+    </form>
+</div>
+    
+        
+    
