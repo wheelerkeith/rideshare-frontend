@@ -29,15 +29,10 @@ export class SignupModalComponent implements OnInit {
   address :string;
   isDriver: boolean;
   isRider: boolean;
-<<<<<<< HEAD
 /**
  * @type {User}
  * @memberof SignupModalComponent
  */
-=======
-  unamePattern = "^\\w+\\.?\\w+$"
-
->>>>>>> added form validations login, sign-up, profile-car
   user :User = new User();
   batch: Batch = new Batch();
   batches: Batch[];
