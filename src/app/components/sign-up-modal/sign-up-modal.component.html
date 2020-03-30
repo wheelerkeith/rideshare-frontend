@@ -8,7 +8,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form (submit)="submitUser()">
+  <form (submit)="submitUser()" #myForm="ngForm">
     <div class="modal-body">
         <label for="firstname">First Name</label>
         <input (keydown)="firstNameError = ''" id="firstname" type="text" [(ngModel)]="user.firstName" maxlength="30" required name="firstName" class="form-control" />
@@ -70,7 +70,7 @@
           </div>
         </div>
         <div class="btn-container">
-          <button type="submit" class="btn btn-primary register">Submit</button>
+          <button type="submit" class="btn btn-primary register" [disabled]="!myForm.form.valid">Submit</button>
         </div>
       </div>
     </form>
