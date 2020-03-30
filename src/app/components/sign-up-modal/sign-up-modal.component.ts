@@ -115,9 +115,11 @@ submitUser() {
     this.hCityError='';
     this.hZipError='';
     this.success='';
+    /*
+    commented code below is will break backend logic because it is irrelevant
+
     this.user.wAddress = this.user.hAddress;
-    // this.user.wState = this.user.hState;
-    // code above is commented out because the logic is breaking the backend validation - wAddress is irrelevant for sign up form
+    this.user.wState = this.user.hState;
     this.user.wCity = this.user.hCity;
     this.user.wZip = this.user.hZip;
     let driver = <HTMLInputElement> document.getElementById("driver");
