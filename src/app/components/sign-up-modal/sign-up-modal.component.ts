@@ -5,6 +5,10 @@ import { User } from 'src/app/models/user';
 import { Batch } from 'src/app/models/batch';
 import { BatchService } from 'src/app/services/batch-service/batch.service';
 import { ValidationService } from 'src/app/services/validation-service/validation.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { SessionService } from 'src/app/services/session-service/session.service';
+import { Router } from '@angular/router';
 
 /**
  * @export
@@ -71,7 +75,7 @@ export class SignupModalComponent implements OnInit {
    * @param {ValidationService} validationService
    * @memberof SignupModalComponent
    */
-  constructor(private modalService :BsModalService, private userService :UserService, private batchService :BatchService, private validationService :ValidationService) { }
+  constructor(private modalService :BsModalService, private userService :UserService, private batchService :BatchService, private validationService :ValidationService, private http: HttpClient, private sessionService: SessionService, private router: Router) { }
 /**
  * OnInit function
  *
@@ -104,16 +108,51 @@ openModal(template :TemplateRef<any>){
  * @memberof SignupModalComponent
  */
 submitUser() {
-    this.user.userId = 0;
-    this.firstNameError = '';
-    this.lastNameError = '';
-    this.phoneNumberError ='';
-    this.userNameError ='';
-    this.emailError ='';
-    this.hStateError='';
-    this.hAddressError='';
-    this.hCityError='';
-    this.hZipError='';
-    this.success='';
+  this.user.userId = 0;
+  this.firstNameError = '';
+  this.lastNameError = '';
+  this.phoneNumberError ='';
+  this.userNameError ='';
+  this.emailError ='';
+  this.hStateError='';
+  this.hAddressError='';
+  this.hCityError='';
+  this.hZipError='';
+  this.success='';
+  this.user.wAddress = this.user.hAddress;
+  this.user.wState = this.user.hState;
+  this.user.wCity = this.user.hCity;
+  this.user.wZip = this.user.hZip;
+  let driver = <HTMLInputElement> document.getElementById("driver");
+  let rider = <HTMLInputElement> document.getElementById("rider");
+
+  if(driver.checked == true){
+    this.user.isDriver =  true;
+  }
+  if(rider.checked == true){
+    this.user.isDriver =  false;
+  }
+  this.userService.addUser(this.user).subscribe(
+    res => {
+      console.log(res);
+      if (Object.keys(res).length === 0) {
+        this.http.get(`${environment.loginUri}?userName=${this.user.userName}&passWord='placeholder'`).subscribe(response => {
+          if ((response["name"] != undefined) && (response["userid"] != undefined)) {
+						sessionStorage.setItem("name", response["name"]);
+						sessionStorage.setItem("userid", response["userid"]);
+						this.modalRef.hide();
+						this.sessionService.loggedIn();
+            this.router.navigate(['drivers']);
+					}
+        })
+      } else {
+        this.hAddressError = res.hAddress;
+        this.hStateError = res.hState;
+        this.hZipError = "Invalid";
+        this.hCityError = res.hCity;
+      }
+    }
+  );
+
 }
 }
