@@ -1,4 +1,6 @@
 import { Batch } from './batch';
+import { Car } from './car';
+
 
 export class User {
     /**
@@ -49,4 +51,6 @@ export class User {
     wCity: string;
     wState: string;
     wZip: number;
+    ride: {distance: number, duration: number};
+    car: Car;
 }
