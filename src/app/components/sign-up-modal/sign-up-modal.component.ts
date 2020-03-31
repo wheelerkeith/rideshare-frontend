@@ -108,7 +108,6 @@ openModal(template :TemplateRef<any>){
  * @memberof SignupModalComponent
  */
 submitUser() {
-  this.user.userId = 0;
   this.firstNameError = '';
   this.lastNameError = '';
   this.phoneNumberError ='';
@@ -119,10 +118,7 @@ submitUser() {
   this.hCityError='';
   this.hZipError='';
   this.success='';
-  this.user.wAddress = this.user.hAddress;
-  this.user.wState = this.user.hState;
-  this.user.wCity = this.user.hCity;
-  this.user.wZip = this.user.hZip;
+  
   let driver = <HTMLInputElement> document.getElementById("driver");
   let rider = <HTMLInputElement> document.getElementById("rider");
 
@@ -134,7 +130,6 @@ submitUser() {
   }
   this.userService.addUser(this.user).subscribe(
     res => {
-      console.log(res);
       if (Object.keys(res).length === 0) {
         this.http.get(`${environment.loginUri}?userName=${this.user.userName}&passWord='placeholder'`).subscribe(response => {
           if ((response["name"] != undefined) && (response["userid"] != undefined)) {

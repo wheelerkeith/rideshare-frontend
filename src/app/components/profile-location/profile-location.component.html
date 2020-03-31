@@ -98,6 +98,7 @@
                 <input required [(ngModel)]="zipcode" name="zipcode" #zipcodeInfo="ngModel" type="text" class="form-control" id="zipcode">
                 <p *ngIf="zipcodeInfo.errors" class="error">Zipcode is required</p>
                 <p *ngIf="success != ''" class="success">{{success}}</p>
+                <p *ngIf="fail != ''" class="error">{{fail}}</p>
             </div>
         </div>
         

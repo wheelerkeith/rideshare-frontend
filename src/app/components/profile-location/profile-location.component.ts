@@ -27,6 +27,7 @@ zipcode: number;
   hState: string;
   currentUser: User;
   success :string;
+  fail: string;
 /**
  *Creates an instance of ProfileLocationComponent.
  * @param {UserService} userService
@@ -42,7 +43,6 @@ ngOnInit() {
    this.userService.getUserById2(sessionStorage.getItem("userid")).subscribe((response)=>{
       this.currentUser = response;
       this.zipcode = response.hZip;
-      console.log(this.zipcode);
       this.city = response.hCity;
       this.address = response.hAddress;
       this.address2 = response.wAddress;
@@ -61,7 +61,15 @@ updatesContactInfo(){
     this.currentUser.hAddress = this.address;
     this.currentUser.wAddress = this.address2;
     this.currentUser.hState = this.hState;
-    this.userService.updateUserInfo(this.currentUser);
-    this.success = "Updated Successfully!";
+    this.userService.updateUserInfo(this.currentUser).subscribe(response => {
+      this.success = "";
+      this.fail = "";
+      if (Object.keys(response).length === 0) {
+        this.success = "Updated Successfully!";
+      } else {
+        this.fail = "Invalid address!";
+      }
+    });
+    
   }
 }
