@@ -72,8 +72,7 @@ createCarInfo(){
     this.currentCar.color = this.color;
     this.currentCar.year = this.year;
     this.currentCar.seats = this.nrSeats;
-    this.currentCar.user = this.currentUser
-    this.carService.createCar(this.currentCar,this.currentCar.user.userId);
+    this.carService.createCar(this.currentCar,this.currentUser.userId);
     this.success = "Updated Successfully!";
   }
 /**
