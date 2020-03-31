@@ -30,6 +30,7 @@ export class ProfileCarComponent implements OnInit {
   nrSeats:number = 0;
   currentCar: Car;
   success :string;
+  fail: string;
   currentUser: User;
 /**
  *Creates an instance of ProfileCarComponent.
@@ -72,8 +73,17 @@ createCarInfo(){
     this.currentCar.color = this.color;
     this.currentCar.year = this.year;
     this.currentCar.seats = this.nrSeats;
-    this.carService.createCar(this.currentCar,this.currentUser.userId);
-    this.success = "Updated Successfully!";
+    this.carService.createCar(this.currentCar,this.currentUser.userId).subscribe(response => {
+      this.userService.updateIsDriver(true, this.currentUser.userId);
+      this.success = "";
+      this.fail = "";
+      if (Object.keys(response).length === 0) {
+        this.success = "Updated Successfully!";
+      } else {
+        this.fail = "Invalid information!";
+      }
+    });
+    
   }
 /**
  *allows user to update existing car
@@ -87,8 +97,15 @@ updatesCarInfo(){
     this.currentCar.color = this.color;
     this.currentCar.year = this.year;
     this.currentCar.seats = this.nrSeats;
-    this.carService.updateCarInfo(this.currentCar);
-    this.success = "Updated Successfully!";
+    this.carService.updateCarInfo(this.currentCar).subscribe(response => {
+      this.success = "";
+      this.fail = "";
+      if (Object.keys(response).length === 0) {
+        this.success = "Updated Successfully!";
+      } else {
+        this.fail = "Invalid information!";
+      }
+    });
   }
 /**
  *will create a new car if user does not have a car

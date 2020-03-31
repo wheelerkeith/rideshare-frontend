@@ -61,7 +61,7 @@ export class CarService {
 	 * @param car
 	 */
 	updateCarInfo(car: Car) {
-		return this.http.put(`${this.url}${car.carId}`, car).toPromise();
+		return this.http.put(`${this.url}${car.carId}`, car);
 	}
 
 
@@ -76,17 +76,7 @@ export class CarService {
 
 		this.user.userId = userId;
 		car.user = this.user;
-
-		this.http.post(this.url, car, {observe: 'response'}).subscribe(
-			(response) => {
-				if (response) {
-					this.userService.updateIsDriver(true, userId);
-				}
-			},
-			(error) => {
-				console.warn(error);
-			}
-		);
+		return this.http.post(this.url, car);
 	}
 
 	/**
