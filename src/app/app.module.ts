@@ -67,7 +67,6 @@ import { SessionService } from './services/session-service/session.service';
     HomePageComponent,
     BsNavbarComponent,
     DriverListEntryComponent
-    
   ],
   imports: [
     BrowserModule,

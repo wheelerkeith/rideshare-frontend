@@ -93,9 +93,6 @@ export class User {
      * User: work zipcode
      */
     wZip: number;
-
-    /**
-     * User: car-> calls Car constructor, Car()
-     */
-    car: Car = new Car();
+    ride: {distance: number, duration: number};
+    car: Car;
 }

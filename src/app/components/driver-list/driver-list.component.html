@@ -24,50 +24,32 @@
           </div>
         </div>
       </div>
-      <table class="table table-striped" id="driver-table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Distance</th>
+      <div *ngIf="drivers.length > 0; then showDrivers else noDrivers">
+
+      </div>
+      <ng-template #showDrivers>
+        <table class="table table-striped" id="driver-table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Seats</th>
+              <th scope="col">Distance</th>
             <th scope="col">Time</th>
             <th scope="col">View Info</th>
           </tr>
         </thead>
-        <tbody *ngIf="drivers.length > 0">
-          <tr *ngFor="let driver of drivers">
-            <td class="col">{{driver.name}}</td>
-            <td class="col">{{driver.ride.distance}}</td>
-            <td class="col">{{driver.ride.duration}}</td>
-            <td class="col">
-              <button [attr.data-target]="'#exampleModalCentered' + driver.id" type="button" class="btn btn-primary"
-                data-toggle="modal"> View</button>
-              <div class="col">
-                <div class="modal" id="exampleModalCentered{{driver.id}}" tabindex="-1" role="dialog"
-                  aria-labelledby="exampleModalCenteredLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenteredLabel">Contact Info:</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">×</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <h1>{{driver.name}}</h1>
-                        <h3>Email: {{driver.email}}</h3>
-                        <h3>Phone: {{driver.phone}}</h3>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
+        <tbody>
+          <tr app-driver-list-entry class="list-entry" *ngFor="let driver of drivers" [driver]=driver></tr>
         </tbody>
       </table>
+      </ng-template>
+      <ng-template #noDrivers>
+        <div class="row">
+          <div class="text-center col-lg-12">
+            <h2>No Drivers in Your Area</h2>
+          </div>
+        </div>
+      </ng-template>
     </div>
     <div class="col-lg-6">
       <h4>Directions:</h4>

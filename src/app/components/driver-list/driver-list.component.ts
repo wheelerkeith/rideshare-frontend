@@ -6,6 +6,7 @@ import { BatchService } from '../../services/batch-service/batch.service';
 import { FilterService } from '../../services/filter-service/filter-service.service';
 import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { User } from 'src/app/models/user';
+import { Car } from 'src/app/models/car';
 
 
 
@@ -61,10 +62,10 @@ export class DriverListComponent implements OnInit {
 
       this.drivers = [];
 
-      this.userService.getRidersForLocation1(this.location).subscribe(
+      this.filterService.getFilteredDrivers(this.selectedFilters, this.currentUserId, this.selectedBatch).subscribe(
         res => {
-          //console.log(res);
-          res.forEach(element => {
+          console.log(this.selectedFilters, this.currentUserId, this.selectedBatch,res);
+          res["Drivers"].forEach(element => {
             this.drivers.push({
               'id': element.userId,
               'name': element.firstName + " " + element.lastName,
@@ -157,6 +158,8 @@ export class DriverListComponent implements OnInit {
           let distance = results[0].distance.text;
           let duration = results[0].duration.text;
           driver.ride = { distance: distance, duration: duration };
+          driver.car = new Car();
+          driver.car.seats = 4;
         }
       });
     }
@@ -165,8 +168,19 @@ export class DriverListComponent implements OnInit {
   filterDrivers() {
     console.log(this.currentUserId);
     this.filterService.getFilteredDrivers(this.selectedFilters, this.currentUserId, this.selectedBatch)
-      .subscribe((response) => {
-        console.log(response["Drivers"].map(item=>{return {batch:item.batch, city:item.hCity}}));
+      .subscribe((res) => {
+        res["Drivers"].forEach((element, index) => {
+          this.drivers[index] = {
+            'id': element.userId,
+            'name': element.firstName + " " + element.lastName,
+            'origin': element.hCity + "," + element.hState,
+            'email': element.email,
+            'phone': element.phoneNumber,
+            'ride': { distance: 0, duration: 0 }
+          };
+        });
+        this.displayDriversList();
+        this.showDriversOnMap(this.location, this.drivers);
       });
   }
 }
