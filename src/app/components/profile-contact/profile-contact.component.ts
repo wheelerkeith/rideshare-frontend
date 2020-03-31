@@ -28,6 +28,7 @@ profileObject : User;
   email: string;
   phone: string;
   success :string;
+  fail: string;
   /**
    *Creates an instance of ProfileContactComponent.
    * @param {Router} router
@@ -63,8 +64,16 @@ updatesContactInfo(){
     this.profileObject.email = this.email;
     this.profileObject.phoneNumber = this.phone;
 
-    this.userService.updateUserInfo(this.profileObject);
-    this.success = "Updated Successfully!";
+    this.userService.updateUserInfo(this.profileObject).subscribe(response => {
+      this.success = "";
+      this.fail = "";
+      if (Object.keys(response).length === 0) {
+        this.success = "Updated Successfully!";
+      } else {
+        this.fail = "Invalid fields!";
+      }
+    });
+    
   }
 
 
