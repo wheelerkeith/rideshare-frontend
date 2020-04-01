@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { SessionService } from 'src/app/services/session-service/session.service';
 import { Router } from '@angular/router';
+import { Car } from 'src/app/models/car';
 
 /**
  * @export
@@ -118,6 +119,7 @@ submitUser() {
   this.hCityError='';
   this.hZipError='';
   this.success='';
+  this.user.car = null;
   
   let driver = <HTMLInputElement> document.getElementById("driver");
   let rider = <HTMLInputElement> document.getElementById("rider");
