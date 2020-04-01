@@ -1,4 +1,5 @@
 import { Batch } from './batch';
+import { Car } from './car';
 
 export class User {
 
@@ -92,4 +93,9 @@ export class User {
      * User: work zipcode
      */
     wZip: number;
+
+    /**
+     * User: car-> calls Car constructor, Car()
+     */
+    car: Car = new Car();
 }
