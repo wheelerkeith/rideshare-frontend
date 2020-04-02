@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
 import { SessionService } from 'src/app/services/session-service/session.service';
 import { Router } from '@angular/router';
 import { Car } from 'src/app/models/car';
+import { AuthService } from 'src/app/services/auth-service/auth.service';
 
 /**
  * @export
@@ -76,7 +77,7 @@ export class SignupModalComponent implements OnInit {
    * @param {ValidationService} validationService
    * @memberof SignupModalComponent
    */
-  constructor(private modalService :BsModalService, private userService :UserService, private batchService :BatchService, private validationService :ValidationService, private http: HttpClient, private sessionService: SessionService, private router: Router) { }
+  constructor(private modalService :BsModalService, private userService :UserService, private batchService :BatchService, private validationService :ValidationService, private http: HttpClient, private sessionService: SessionService, private router: Router, private authService: AuthService) { }
 /**
  * OnInit function
  *
@@ -133,7 +134,7 @@ submitUser() {
   this.userService.addUser(this.user).subscribe(
     res => {
       if (Object.keys(res).length === 0) {
-        this.http.get(`${environment.loginUri}?userName=${this.user.userName}&passWord='placeholder'`).subscribe(response => {
+        this.authService.authenticateUserCredential(this.user.userName).subscribe(response => {
           if ((response["name"] != undefined) && (response["userid"] != undefined)) {
 						sessionStorage.setItem("name", response["name"]);
 						sessionStorage.setItem("userid", response["userid"]);
