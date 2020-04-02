@@ -61,7 +61,9 @@ export class CarService {
 	 * @param car
 	 */
 	updateCarInfo(car: Car) {
-		return this.http.put(`${this.url}${car.carId}`, car);
+		console.log(car);
+		console.log(this.url);
+		return this.http.put(this.url, car);
 	}
 
 
