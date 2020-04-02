@@ -52,4 +52,7 @@ export class AppPage {
   getProfileContainerTitle() {
     return element(by.id("profile-container-title"));
   }
+  getProfileContainerSubmitButton() {
+    return element(by.id("profile-container-submit-btn"));
+  }
 }
