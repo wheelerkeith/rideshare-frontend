@@ -1,15 +1,14 @@
 
 <div class="container mainContainer">
-    
     <i class="fa fa-user" style="font-family:'FontAwesome';"></i>
-       
-        <h4 id="profile-container-title">Contact Information:</h4>
-    
+    <h4 id="profile-container-title">Contact Information:</h4>
+    <form (submit)="updatesContactInfo()" #myForm="ngForm">
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="f_name" class="col-sm-4 col-form-label">First Name:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="f_name" [(ngModel)]=firstName value="{{ profileObject?.firstName }}">
+                    <input type="text" class="form-control" id="f_name" [(ngModel)]="firstName" #firstNameInfo="ngModel" name="firstName" value="{{ profileObject?.firstName }}" maxlength="30" required>
+                    <p class="error" *ngIf="firstNameInfo.errors">First name is required</p>
                 </div>
         </div>
         
@@ -17,7 +16,8 @@
                 <div class="col-sm-1"></div>
             <label for="l_name" class="col-sm-4 col-form-label">Last Name:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="l_name" [(ngModel)]=lastName value="{{ profileObject?.lastName }}">
+                <input type="text" class="form-control" id="l_name" [(ngModel)]="lastName" #lastNameInfo="ngModel" name="lastName" value="{{ profileObject?.lastName }}" maxlength="30" required>
+                <p class="error" *ngIf="lastNameInfo.errors">Last name is required</p>
             </div>
         </div>
     
@@ -25,7 +25,8 @@
                 <div class="col-sm-1"></div>
             <label for="user_email" class="col-sm-4 col-form-label">Email:</label>
             <div class="col-sm-4">
-                <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp" [(ngModel)]=email value="{{ profileObject?.email }}">
+                <input type="email" class="form-control" id="user_email" pattern="^[^@]+@[^@]+\.[^@]+$" aria-describedby="emailHelp" [(ngModel)]="email" #emailInfo="ngModel" name="email" value="{{ profileObject?.email }}" required>
+                <p class="error" *ngIf="emailInfo.errors">Email is required (i.e. example@example.com) </p>
             </div>
         </div>
     
@@ -33,13 +34,16 @@
                 <div class="col-sm-1"></div>
             <label for="phone" class="col-sm-4 col-form-label">Phone:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="phone" [(ngModel)]=phone value="{{ profileObject?.phoneNumber }}">
+                <input type="text" class="form-control" id="phone" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" required [(ngModel)]="phone" #phoneInfo="ngModel" name="phone" value="{{ profileObject?.phoneNumber }}">
+                <p class="error" *ngIf="phoneInfo.errors">Phone number is required (i.e. 000-000-0000)</p>
                 <p *ngIf="success != ''" class="success">{{success}}</p>
+                <p *ngIf="fail != ''" class="error">{{ fail }}</p>
             </div>
         </div>
         
-        <button type="submit" class="btn btn-primary myBtn" (click)="updatesContactInfo()">Save</button>
-    </div>
+        <button type="submit" class="btn btn-primary myBtn" [disabled]="!myForm.form.valid">Save</button>
+    </form>
+</div>
   
         
     

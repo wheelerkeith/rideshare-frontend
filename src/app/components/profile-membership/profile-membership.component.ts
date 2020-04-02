@@ -56,8 +56,9 @@ export class ProfileMembershipComponent implements OnInit {
    * @memberof ProfileMembershipComponent
    */
   updatesMembershipInfo(){
-    this.carService.updateCarInfo(this.carObject);
-    this.userService.updateUserInfo(this.profileObject);
-    this.success = "Updated Successfully!";
+    this.profileObject.car = this.carObject;
+    this.userService.updateUserInfo(this.profileObject).subscribe(response => {
+      this.success = "Updated Successfully!";
+    });
   }
 }

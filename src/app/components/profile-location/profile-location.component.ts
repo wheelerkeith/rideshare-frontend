@@ -27,6 +27,7 @@ zipcode: number;
   hState: string;
   currentUser: User;
   success :string;
+  fail: string;
 /**
  *Creates an instance of ProfileLocationComponent.
  * @param {UserService} userService
@@ -60,7 +61,15 @@ updatesContactInfo(){
     this.currentUser.hAddress = this.address;
     this.currentUser.wAddress = this.address2;
     this.currentUser.hState = this.hState;
-    this.userService.updateUserInfo(this.currentUser);
-    this.success = "Updated Successfully!";
+    this.userService.updateUserInfo(this.currentUser).subscribe(response => {
+      this.success = "";
+      this.fail = "";
+      if (Object.keys(response).length === 0) {
+        this.success = "Updated Successfully!";
+      } else {
+        this.fail = "Invalid address!";
+      }
+    });
+    
   }
 }
