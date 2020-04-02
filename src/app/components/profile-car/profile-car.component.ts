@@ -73,7 +73,13 @@ createCarInfo(){
     this.currentCar.color = this.color;
     this.currentCar.year = this.year;
     this.currentCar.seats = this.nrSeats;
-    this.carService.createCar(this.currentCar,this.currentUser.userId).subscribe(response => {
+    this.currentUser.car = this.currentCar;
+
+    if (this.year <= 0) {
+      this.currentCar = null;
+      return this.fail = "Invalid information";
+    }
+    this.userService.updateUserInfo(this.currentUser).subscribe(response => {
       this.userService.updateIsDriver(true, this.currentUser.userId);
       this.success = "";
       this.fail = "";
