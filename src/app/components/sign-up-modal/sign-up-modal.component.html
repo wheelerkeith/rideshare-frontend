@@ -1,9 +1,8 @@
 <a (click)="openModal(template)">Sign up</a >
   
 <ng-template #template >
-  <p *ngIf="success != ''" class="success">{{success}}</p>
   <div class="modal-header">
-    <h4 class="modal-title">Sign Up</h4>
+    <h4 id="sign-up-modal-modal-title" class="modal-title">Sign Up</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -12,25 +11,23 @@
     <div class="modal-body">
         <label for="firstname">First Name</label>
         <input (keydown)="firstNameError = ''" id="firstname" type="text" required [(ngModel)]="user.firstName" maxlength="30" name="firstName" class="form-control" />
-        <p *ngIf="firstNameError != ''" class="error">{{firstNameError}}</p>
+        <p id="firstnameError" *ngIf="firstNameError != ''" class="error">{{firstNameError}}</p>
     
         <label for="lastname">Last Name</label>
         <input (keydown)="lastNameError = ''" id="lastname" type="text" required [(ngModel)]="user.lastName" maxlength="30" name="lastName" class="form-control" />
-        <p *ngIf="lastNameError != ''" class="error">{{lastNameError}}</p>
+        <p id="lastnameError" *ngIf="lastNameError != ''" class="error">{{lastNameError}}</p>
     
         <label for="email">Email</label>
         <input (keydown)="emailError = ''" id="email" type="email" required [(ngModel)]="user.email" name="email" class="form-control"/>
-        <p *ngIf="emailError != ''" class="error">{{emailError}}</p>
+        <p id="emailError" *ngIf="emailError != ''" class="error">{{emailError}}</p>
     
         <label for="phoneNumber">Phone Number</label>
         <input (keydown)="phoneNumberError = ''" id="phoneNumber" type="text" required [(ngModel)]="user.phoneNumber" name="phoneNumber" class="form-control"/>
-        <p *ngIf="phoneNumberError != ''" class="error">{{phoneNumberError}}</p>
+        <p id="phoneNumberError" *ngIf="phoneNumberError != ''" class="error">{{phoneNumberError}}</p>
     
         <label for="userName">User Name</label>
         <input (keydown)="userNameError = ''" id="userName" type="text" required [(ngModel)]="user.userName" name="userName" minlength="3" maxlength="12"  class="form-control"/>
-        <p *ngIf="userNameError != ''" class="error">{{userNameError}}</p>    
-        <!--<label for="password">Password</label>
-        <input id="password" type="password" [(ngModel)]="password" class="form-control" />-->
+        <p id="usernameError" *ngIf="userNameError != ''" class="error">{{userNameError}}</p>    
     
         <label id="state">Batch</label>
         <select class="form-control" required [(ngModel)]="user.batch" name="batch">
@@ -40,23 +37,23 @@
     
         <label for="hAddress">Address</label>
         <input (keydown)="hAddressError = ''" id="hAddress" type="text" required [(ngModel)]="user.hAddress" name="hAddress" class="form-control" />
-        <p *ngIf="hAddressError != ''" class="error">{{hAddressError}}</p>
+        <p id="hAddressError" *ngIf="hAddressError != ''" class="error">{{hAddressError}}</p>
     
-        <label id="hCity">City</label>
-        <input (keydown)="hCityError = ''" type="text" required [(ngModel)]="user.hCity" name="hCity" class="form-control" />
-        <p *ngIf="hCityError != ''" class="error">{{hCityError}}</p>
+        <label for="hCity">City</label>
+        <input (keydown)="hCityError = ''" type="text" required [(ngModel)]="user.hCity" id="hCity" name="hCity" class="form-control" />
+        <p id="hCityError" *ngIf="hCityError != ''" class="error">{{hCityError}}</p>
     
-        <label id="hState">State</label>
+        <label for="hState">State</label>
         <select (keydown)="hStateError = ''" class="form-control" required [(ngModel)]="user.hState" name="hState" id="hState" >
                 <option value="none" selected disabled hidden>  
                 </option>
                 <option *ngFor="let state of states" value="{{state}}">{{state}}</option>
         </select>
-        <p *ngIf="hStateError != ''" class="error">{{hStateError}}</p>
+        <p id="hStateError" *ngIf="hStateError != ''" class="error">{{hStateError}}</p>
     
-        <label id="hZip">Zip Code</label>
-        <input (keydown)="hZipError = ''" type="number" required [(ngModel)]="user.hZip" name="hZip" class="form-control" />
-        <p *ngIf="hZipError != ''" class="error">{{hZipError}}</p>
+        <label for="hZip">Zip Code</label>
+        <input (keydown)="hZipError = ''" type="number" required [(ngModel)]="user.hZip" id="hZip" name="hZip" class="form-control" />
+        <p id="hZipError" *ngIf="hZipError != ''" class="error">{{hZipError}}</p>
     
         <div class="radiobody">
           <div class="btn-group" data-toggle="buttons">
@@ -74,4 +71,4 @@
         </div>
       </div>
     </form>
-</ng-template> 
+</ng-template>

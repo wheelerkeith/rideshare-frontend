@@ -1,7 +1,7 @@
 describe('User logged in nav bar tests', function(){
     //beginning of elements for the login
     let elLoginButton = element(by.xpath('/html/body/app-root/app-home-page/div[1]/div/div/button[1]'));
-    let elLoginUsername = element(by.xpath('//*[@id="formGroupExampleInput"]'));
+    let elLoginUsername = element(by.xpath('//*[@id="login-form-username-input"]'));
     let elLoginPassword = element(by.xpath('//*[@id="formGroupExampleInput2"]'));
     let elLoginSubmit = element(by.xpath('//*[@id="sign-in-btn"]'));
     let elLoggedInHeader = element(by.xpath('//*[@id="navbarDropdown"]/span'));
@@ -24,6 +24,7 @@ describe('User logged in nav bar tests', function(){
     //checks to make sure that the login button reroutes to the correct modal
     //change when the front end is being hosted
     it('User Presses the login button and signs in as the logged in user', function(){
+        browser.get(browser.baseUrl);
         browser.driver.manage().window().setSize(xComp,y);
         elLoginButton.click();
         //These are based off of dummy data currently. Change if desired
@@ -40,7 +41,6 @@ describe('User logged in nav bar tests', function(){
     change when the front end is being hosted
     */
     it('User Presses the Driver Button and goes to the driver page on a laptop', function(){
-        browser.waitForAngular();
         browser.ignoreSynchronization=true
         elDriverButton.click();
         //enter expected toBe text when information is gained
@@ -79,7 +79,7 @@ describe('User logged in nav bar tests', function(){
         browser.waitForAngular();
         browser.ignoreSynchronization=true
         browser.driver.manage().window().setSize(xPhone,y);
-        elHamburger.click();
+        //elHamburger.click();
         browser.driver.sleep(500);
         elSearchButton.click();
         expect(elSearchHeader.getText()).toBe('Revature RideForce');
@@ -108,7 +108,7 @@ describe('User logged in nav bar tests', function(){
         browser.waitForAngular();
         browser.ignoreSynchronization=true
         browser.driver.manage().window().setSize(xPhone,y);
-        elHamburger.click();
+        //elHamburger.click();
         browser.driver.sleep(500);
         elProfileDrop.click();
         elProfileButton.click();
