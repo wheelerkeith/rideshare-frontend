@@ -2,6 +2,8 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
 import { Admin } from 'src/app/models/admin';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 
 @Injectable({
@@ -21,7 +23,7 @@ export class AuthService {
 	 * This is the constructor
 	 * @param router Creates a router instance
 	 */
-	constructor(private router: Router) { }
+	constructor(private router: Router, private http: HttpClient) { }
 
 	/**
 	 * A user object is created
@@ -69,5 +71,9 @@ export class AuthService {
 
 	getEmitter() {
 		return this.fireIsLoggedIn;
+	}
+
+	authenticateUserCredential(userName) {
+		return this.http.get(`${environment.loginUri}?userName=${userName}&passWord='placeholder'`);
 	}
 }

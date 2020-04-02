@@ -131,7 +131,7 @@ export class UserService {
 				this.user.isDriver = isDriver;
 				this.user.isAcceptingRides = (this.user.active && isDriver);
 
-				this.http.put(this.url+userId, this.user).subscribe(
+				this.http.put(this.url, this.user).subscribe(
 					(response) => {
 						this.authService.user = response;
 						this.log.info(JSON.stringify(response));
@@ -180,7 +180,7 @@ export class UserService {
 
 	updateUserInfo(user: User) {
 		//console.log(user);
-		return this.http.put(this.url, user).toPromise();
+		return this.http.put(this.url, user);
 	}
 	
 	/**
