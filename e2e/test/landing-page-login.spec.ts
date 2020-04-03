@@ -8,6 +8,11 @@ describe('test landing page login form', () => {
     page = new AppPage();
   });
 
+  /*
+  * need this here so that the first test does not start before actually reaching the landing page
+  */
+  browser.get(browser.baseUrl);
+
   it('get login button', () => {
     page.navigateTo();
     expect(page.getLoginButton().getText()).toEqual('Login');

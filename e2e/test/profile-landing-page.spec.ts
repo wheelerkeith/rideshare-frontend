@@ -1,7 +1,7 @@
 import { AppPage } from '../src/app.po';
 import { browser, logging, element, by } from 'protractor';
 
-describe('test landing page login form', () => {
+describe('test profile landing page', () => {
   let page: AppPage;
 
   beforeEach(() => {
@@ -14,8 +14,8 @@ describe('test landing page login form', () => {
     page.getLoginButton().click();
     element(by.id("login-form-username-input")).sendKeys("wviani");
     page.getLoginFormLoginButton().click();
-    browser.waitForAngularEnabled(false);
     page.getNavDropDown().click();
+    browser.waitForAngularEnabled(false);
     page.getNavProfileA().click();
     expect(element(by.id("profile-container")).isPresent()).toBe(true);
   });
