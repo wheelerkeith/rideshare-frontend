@@ -22,15 +22,15 @@
                 <th> Car Color </th>
                 <th id="year" (click)="orderByYear()"> Car Year ⇳</th>
             </tr>
-            <tr *ngFor = "let car of availableCars" class="car-info">
-                <td>{{car.user.firstName}} {{car.user.lastName}}</td>
-                <td>{{car.user.email}}</td>
-                <td>{{car.user.phoneNumber}}</td>
-                <td>{{car.user.batch.batchLocation}}</td>
-                <td>{{car.make | titlecase}}</td>
-                <td>{{car.model | titlecase}}</td>
-                <td>{{car.color | titlecase}}</td>
-                <td>{{car.year}}</td>
+            <tr *ngFor = "let driver of availableDrivers" class="car-info">
+                <td>{{driver.firstName}} {{driver.lastName}}</td>
+                <td>{{driver.email}}</td>
+                <td>{{driver.phoneNumber}}</td>
+                <td>{{driver.batch.batchLocation}}</td>
+                <td>{{driver.car.make | titlecase}}</td>
+                <td>{{driver.car.model | titlecase}}</td>
+                <td>{{driver.car.color | titlecase}}</td>
+                <td>{{driver.car.year}}</td>
             </tr>
         </table>
     </div>

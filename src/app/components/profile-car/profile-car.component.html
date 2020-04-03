@@ -1,44 +1,62 @@
 <div class="container mainContainer">
-    
-        <i class="fa fa-car" style="font-family:'FontAwesome';"></i>
-        
-    
-        <h4>Car Information:</h4>
-        
+    <i class="fa fa-car" style="font-family:'FontAwesome';"></i>
+    <h4 id="profile-container-title">Car Information:</h4>
+    <form (submit)="onSubmit()" #myForm="ngForm">
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="make" class="col-sm-4 col-form-label">Make:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="make" [(ngModel)]=make>
+                    <input type="text" class="form-control" id="make" [(ngModel)]=make value="{{currentCar?.make}}" name="make" required #makeInfo="ngModel">
+                    <p *ngIf="makeInfo.errors" class="error">Car make is required</p>
                 </div>
         </div>
-        
+
         <div class="form-group row">
-                <div class="col-sm-1"></div>
+            <div class="col-sm-1"></div>
             <label for="model" class="col-sm-4 col-form-label">Model:</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="model" [(ngModel)]=model>
+                <input type="text" class="form-control" id="model" [(ngModel)]=model value="{{currentCar?.model}}" name="model" required #modelInfo="ngModel">
+                <p *ngIf="modelInfo.errors" class="error">Car model is required</p>
             </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+              <label for="color" class="col-sm-4 col-form-label">Color:</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="color" [(ngModel)]=color value="{{currentCar?.color}}" name="color">
+              </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+              <label for="year" class="col-sm-4 col-form-label">Year:</label>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control" id="year" [(ngModel)]=year value="{{currentCar?.year}}" name="year">
+              </div>
         </div>
 
         <div class="form-group row">
             <div class="col-sm-1"></div>
                 <label for="Nrseats" class="col-sm-4 col-form-label ">Number of seats:</label>
                 <div class="col-sm-4">
-                <select class="form-control" id="Nrseats" [(ngModel)]=nrSeats>
-                    <option>Choose the number of seats</option>
+                <select class="form-control" id="Nrseats" [(ngModel)]=nrSeats value="{{currentCar?.seats}}" name="nrSeats" required #seatInfo="ngModel">
+                    <option disabled>Choose the number of seats</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
+                <p *ngIf="seatInfo.errors" class="error">Number of seats required</p>
                 <p *ngIf="success != ''" class="success">{{success}}</p>
+                <p *ngIf="fail != ''" class="error">{{fail}}</p>
             </div>
         </div>
         
-        <button type="submit" class="btn btn-primary myBtn" (click)="updatesCarInfo()">Save</button>
-    </div>
+        <button type="submit" class="btn btn-primary myBtn" [disabled]="!myForm.form.valid">Save</button>
+    </form>
+</div>
     
         
     

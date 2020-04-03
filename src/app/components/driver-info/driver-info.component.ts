@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/services/auth-service/auth.service';
 import { Router } from '@angular/router';
 import { BatchService } from 'src/app/services/batch-service/batch.service';
 import { Batch } from 'src/app/models/batch';
+import { UserService } from 'src/app/services/user-service/user.service';
+import { User } from 'src/app/models/user';
 
 
 @Component({
@@ -12,6 +14,11 @@ import { Batch } from 'src/app/models/batch';
   templateUrl: './driver-info.component.html',
   styleUrls: ['./driver-info.component.css']
 })
+
+/**
+ * The DriverInfo component
+ */
+
 export class DriverInfoComponent implements OnInit {
 
   /**
@@ -19,8 +26,8 @@ export class DriverInfoComponent implements OnInit {
    */
 
   batches: Batch[] = [];
-  allAvailableCars: Car[] = [];
-  availableCars: Car[] = [];
+  allAvailableDrivers: User[] = [];
+  availableDrivers: User[] = [];
 
   /**
    * Set order year as a boolean false
@@ -46,26 +53,26 @@ export class DriverInfoComponent implements OnInit {
 
   noUserFound: boolean = false;
   /**
-   * A constructor 
+   * A constructor
    * @param carService A car service is injected.
    * @param authService An auth service is injected.
    * @param router  A router service is injected.
    * @param batchService A batch service is injected.
    */
 
-  constructor(private carService: CarService, private authService: AuthService, private router: Router, private batchService: BatchService) { }
+  constructor(private carService: CarService, private userService: UserService, private authService: AuthService, private router: Router, private batchService: BatchService) { }
 
   /**
-   * A function that set the component
+   * This function sets the component
    */
   ngOnInit() {
     let userId = this.authService.user.userId;
     if (!userId) {
       this.router.navigate(['']);
     } else {
-      this.carService.getAllCars().subscribe(
+      this.userService.getAllUsers().subscribe(
         data => {
-          this.allAvailableCars = data.filter(car => car.user.isAcceptingRides && car.user.active);
+          this.allAvailableDrivers = data.filter(user => user.isAcceptingRides && user.active);
           this.orderByLocation();
         }
       )
@@ -80,9 +87,9 @@ export class DriverInfoComponent implements OnInit {
   orderByLocation() {
     let userLocation = this.authService.user.batch.batchLocation;
 
-    this.allAvailableCars.sort((a, b) => a.user.batch.batchLocation > b.user.batch.batchLocation ? 1 : -1);
-    this.allAvailableCars = this.allAvailableCars.filter(car => car.user.batch.batchLocation === userLocation).concat(this.allAvailableCars.filter(car => car.user.batch.batchLocation !== userLocation));
-    this.availableCars = this.allAvailableCars;
+    this.allAvailableDrivers.sort((a, b) => a.batch.batchLocation > b.batch.batchLocation ? 1 : -1);
+    this.allAvailableDrivers = this.allAvailableDrivers.filter(user => user.batch.batchLocation === userLocation).concat(this.allAvailableDrivers.filter(user => user.batch.batchLocation !== userLocation));
+    this.availableDrivers = this.allAvailableDrivers;
   }
 
   /**
@@ -91,9 +98,9 @@ export class DriverInfoComponent implements OnInit {
 
   orderByYear() {
     if (!this.orderYear) {
-      this.availableCars.sort((a, b) => b.year - a.year);
+      this.availableDrivers.sort((a, b) => b.car.year - a.car.year);
     } else {
-      this.availableCars.sort((a, b) => a.year - b.year);
+      this.availableDrivers.sort((a, b) => a.car.year - b.car.year);
     }
     this.orderYear = !this.orderYear;
   }
@@ -104,9 +111,9 @@ export class DriverInfoComponent implements OnInit {
 
   orderByFullName() {
     if (!this.orderFirstName) {
-      this.availableCars.sort((a, b) => a.user.firstName > b.user.firstName ? 1 : -1);
+      this.availableDrivers.sort((a, b) => a.firstName > b.firstName ? 1 : -1);
     } else {
-      this.availableCars.sort((a, b) => a.user.firstName > b.user.firstName ? -1 : 1);
+      this.availableDrivers.sort((a, b) => a.firstName > b.firstName ? -1 : 1);
     }
     this.orderFirstName = !this.orderFirstName;
   }
@@ -117,9 +124,9 @@ export class DriverInfoComponent implements OnInit {
 
   searchDriverByName() {
     this.noUserFound = false;
-    this.availableCars = this.allAvailableCars.filter(car => `${car.user.firstName} ${car.user.lastName}`.toLowerCase().includes(this.searchName.toLowerCase()));
-    if (this.availableCars.length === 0) {
-      this.availableCars = this.allAvailableCars;
+    this.availableDrivers = this.allAvailableDrivers.filter(driver => `${driver.firstName} ${driver.lastName}`.toLowerCase().includes(this.searchName.toLowerCase()));
+    if (this.availableDrivers.length === 0) {
+      this.availableDrivers = this.allAvailableDrivers;
       this.noUserFound = true;
     }
   }
@@ -129,31 +136,34 @@ export class DriverInfoComponent implements OnInit {
    */
 
   searchDriverByLocation() {
-    this.availableCars = this.allAvailableCars.filter(car => 
-     car.user.batch.batchLocation.toLowerCase().includes(this.searchLocation.toLowerCase()))
+    this.availableDrivers = this.allAvailableDrivers.filter(driver =>
+     driver.batch.batchLocation.toLowerCase().includes(this.searchLocation.toLowerCase()))
     }
   /**
    * A function that filters by location
    *
    */
-  
+
   filterDriverByLocation(event) {
     this.noUserFound = false;
-    this.availableCars = this.allAvailableCars.filter(car => car.user.batch.batchLocation == event.target.value);
-    if (this.availableCars.length === 0) {
-      this.availableCars = this.allAvailableCars;
+    this.availableDrivers = this.allAvailableDrivers.filter(driver => driver.batch.batchLocation == event.target.value);
+    if (this.availableDrivers.length === 0) {
+      this.availableDrivers = this.allAvailableDrivers;
       this.noUserFound = true;
     }
   }
 
   /**
-   * A GET method that retrieves all driver
+   * A GET method that retrieves all drivers
    */
   showAllDrivers() {
     this.searchName = '';
     this.orderByLocation();
   }
 
+  /**
+   * A function that hides the no user found message
+   */
   hideMessage() {
     this.noUserFound = false;
   }

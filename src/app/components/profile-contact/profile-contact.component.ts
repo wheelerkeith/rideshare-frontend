@@ -2,24 +2,46 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-
+/**
+ *
+ *
+ * @export
+ * @class ProfileContactComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-profile-contact',
   templateUrl: './profile-contact.component.html',
   styleUrls: ['./profile-contact.component.css']
 })
 export class ProfileContactComponent implements OnInit {
-
-  profileObject : User;
+/**
+ *
+ *
+ * @type {User}
+ * @memberof ProfileContactComponent
+ */
+profileObject : User;
   currentUser: any = '';
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
   success :string;
+  fail: string;
+  /**
+   *Creates an instance of ProfileContactComponent.
+   * @param {Router} router
+   * @param {UserService} userService
+   * @memberof ProfileContactComponent
+   */
   constructor(private router: Router, private userService: UserService) { }
-
-  ngOnInit() {
+/**
+ * OnInit function
+ *
+ * @memberof ProfileContactComponent
+ */
+ngOnInit() {
     this.currentUser = this.userService.getUserById2(sessionStorage.getItem("userid")).subscribe((response)=>{
       this.profileObject = response;
 
@@ -29,17 +51,29 @@ export class ProfileContactComponent implements OnInit {
       this.phone = this.profileObject.phoneNumber;
 
     });
-    
-  }
 
-  updatesContactInfo(){
+  }
+/**
+ * Function that updates contact info
+ *
+ * @memberof ProfileContactComponent
+ */
+updatesContactInfo(){
     this.profileObject.firstName = this.firstName;
     this.profileObject.lastName = this.lastName;
     this.profileObject.email = this.email;
     this.profileObject.phoneNumber = this.phone;
 
-    this.userService.updateUserInfo(this.profileObject);
-    this.success = "Updated Successfully!";
+    this.userService.updateUserInfo(this.profileObject).subscribe(response => {
+      this.success = "";
+      this.fail = "";
+      if (Object.keys(response).length === 0) {
+        this.success = "Updated Successfully!";
+      } else {
+        this.fail = "Invalid fields!";
+      }
+    });
+    
   }
 
 

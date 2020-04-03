@@ -30,6 +30,11 @@
     width: 230px;
     border-radius:15px;
 }
+.error {
+    text-align: left;
+    color: red;
+    margin: 0;
+}
 .row{
     text-align:center;
 }
