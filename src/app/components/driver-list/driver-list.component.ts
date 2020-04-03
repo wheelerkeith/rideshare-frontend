@@ -53,9 +53,9 @@ export class DriverListComponent implements OnInit {
       this.drivers = [];
 
       this.filterService.getFilteredDrivers(this.selectedFilters, this.currentUserId, this.selectedBatch).subscribe(
-        res => {
-          console.log(this.selectedFilters, this.currentUserId, this.selectedBatch,res);
-          res["Drivers"].forEach(element => {
+        (res: Array<User>) => {
+          console.log(this.selectedFilters, this.currentUserId, this.selectedBatch);
+          res.forEach(element => {
             this.drivers.push({
               'id': element.userId,
               'name': element.firstName + " " + element.lastName,
