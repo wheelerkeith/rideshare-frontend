@@ -166,10 +166,9 @@ export class DriverListComponent implements OnInit {
   }
 
   filterDrivers() {
-    console.log(this.currentUserId);
     this.filterService.getFilteredDrivers(this.selectedFilters, this.currentUserId, this.selectedBatch)
-      .subscribe((res) => {
-        res["Drivers"].forEach((element, index) => {
+      .subscribe((res:User[]) => {
+        res.forEach((element, index) => {
           this.drivers[index] = {
             'id': element.userId,
             'name': element.firstName + " " + element.lastName,
