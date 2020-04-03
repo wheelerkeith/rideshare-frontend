@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user-service/user.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
+import { SessionService } from 'src/app/services/session-service/session.service';
 /**
  *
  *
@@ -35,7 +36,7 @@ profileObject : User;
    * @param {UserService} userService
    * @memberof ProfileContactComponent
    */
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService, private sessionService: SessionService) { }
 /**
  * OnInit function
  *
@@ -68,6 +69,9 @@ updatesContactInfo(){
       this.success = "";
       this.fail = "";
       if (Object.keys(response).length === 0) {
+        const updatedName = this.firstName + " " + this.lastName;
+        sessionStorage.setItem("name", updatedName);
+        this.sessionService.loggedIn();
         this.success = "Updated Successfully!";
       } else {
         this.fail = "Invalid fields!";
