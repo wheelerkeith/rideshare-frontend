@@ -1,7 +1,7 @@
 import { AppPage } from '../src/app.po';
 import { browser, logging, element, by } from 'protractor';
 
-describe('test landing page login form', () => {
+describe('test contact information form', () => {
   let page: AppPage;
 
   beforeEach(() => {
@@ -109,20 +109,75 @@ describe('test landing page login form', () => {
   */
   it('persisted - first name changes saved', () => {
     element(by.id("f_name")).clear();
-    element(by.id("f_name")).sendKeys("test_name");
+    element(by.id("f_name")).sendKeys("testName");
     page.getProfileContainerSubmitButton().click();
+    /*
+    * this sleeps are so that the app has time to process the form submit
+    */
+    browser.sleep(500);
     page.getProfileGroupedLocationBtn().click();
     page.getProfileGroupedContactInfoBtn().click();
-    expect(element(by.id("f_name")).getAttribute("value")).toBe("test_name");
-    browser.pause();
+    expect(element(by.id("f_name")).getAttribute("value")).toBe("testName");
     element(by.id("f_name")).clear();
     element(by.id("f_name")).sendKeys("Wain");
     page.getProfileContainerSubmitButton().click();
-    browser.pause();
+    browser.sleep(500);
+    expect(element(by.id("f_name")).getAttribute("value")).toBe("Wain");
   });
 
+  it('persisted - last name changes saved', () => {
+    element(by.id("l_name")).clear();
+    element(by.id("l_name")).sendKeys("testLastName");
+    page.getProfileContainerSubmitButton().click();
+    /*
+    * this sleeps are so that the app has time to process the form submit
+    */
+    browser.sleep(500);
+    page.getProfileGroupedLocationBtn().click();
+    page.getProfileGroupedContactInfoBtn().click();
+    expect(element(by.id("l_name")).getAttribute("value")).toBe("testLastName");
+    element(by.id("l_name")).clear();
+    element(by.id("l_name")).sendKeys("Vian");
+    page.getProfileContainerSubmitButton().click();
+    browser.sleep(500);
+    expect(element(by.id("l_name")).getAttribute("value")).toBe("Vian");
+  });
 
+  it('persisted - email changes saved', () => {
+    element(by.id("user_email")).clear();
+    element(by.id("user_email")).sendKeys("test@email.com");
+    page.getProfileContainerSubmitButton().click();
+    /*
+    * this sleeps are so that the app has time to process the form submit
+    */
+    browser.sleep(500);
+    page.getProfileGroupedLocationBtn().click();
+    page.getProfileGroupedContactInfoBtn().click();
+    expect(element(by.id("user_email")).getAttribute("value")).toBe("test@email.com");
+    element(by.id("user_email")).clear();
+    element(by.id("user_email")).sendKeys("wviani@homestead.com");
+    page.getProfileContainerSubmitButton().click();
+    browser.sleep(500);
+    expect(element(by.id("user_email")).getAttribute("value")).toBe("wviani@homestead.com");
+  });
 
+  it('persisted - phone changes saved', () => {
+    element(by.id("phone")).clear();
+    element(by.id("phone")).sendKeys("5555555555");
+    page.getProfileContainerSubmitButton().click();
+    /*
+    * this sleeps are so that the app has time to process the form submit
+    */
+    browser.sleep(500);
+    page.getProfileGroupedLocationBtn().click();
+    page.getProfileGroupedContactInfoBtn().click();
+    expect(element(by.id("phone")).getAttribute("value")).toBe("5555555555");
+    element(by.id("phone")).clear();
+    element(by.id("phone")).sendKeys("704-338-2790");
+    page.getProfileContainerSubmitButton().click();
+    browser.sleep(500);
+    expect(element(by.id("phone")).getAttribute("value")).toBe("704-338-2790");
+  });
 
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser

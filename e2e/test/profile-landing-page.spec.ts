@@ -1,7 +1,7 @@
 import { AppPage } from '../src/app.po';
 import { browser, logging, element, by } from 'protractor';
 
-describe('test landing page login form', () => {
+describe('test profile landing page', () => {
   let page: AppPage;
 
   beforeEach(() => {
