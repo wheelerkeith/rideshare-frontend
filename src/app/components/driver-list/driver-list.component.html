@@ -1,23 +1,60 @@
-<div class = "container">
-    <div class="row">
-    <div class="col-lg-5">
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
       <h4>Driver's List</h4>
-      
-     <table class="table table-striped">
-       <thead class="thead-dark">
-         <tr>
-           <th scope="col">Name</th>
-           <th scope="col">Distance</th>
-           <th scope="col">Time</th>
-           <th scope="col">View Info</th>
-         </tr>
-       </thead>
-       <tbody id="output"></tbody>
+      <h6>Filters</h6>
+      <div class="container" id="filter-container">
+        <div class="row">
+          <select class="col-lg-12" multiple id="filters" [(ngModel)]="selectedFilters">
+            <option value="batch">Batch</option>
+            <option value="zipcode">Zip Code</option>
+            <option value="city">City</option>
+          </select>
+        </div>
+        <div class="row">
+          <select class="col-lg-12" id="batches" [(ngModel)]="selectedBatch">
+            <option *ngFor="let batch of batches; let index = index" [value]="batch?.batchNumber">
+              {{batch?.batchLocation}}
+            </option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <button (click)="filterDrivers()">Apply Filters</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="drivers.length > 0; then showDrivers else noDrivers">
+
+      </div>
+      <ng-template #showDrivers>
+        <table class="table table-striped" id="driver-table">
+          <caption>List of nearby available drivers</caption>
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Seats</th>
+              <th scope="col">Distance</th>
+            <th scope="col">Time</th>
+            <th scope="col">View Info</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr app-driver-list-entry class="list-entry" *ngFor="let driver of drivers" [driver]=driver></tr>
+        </tbody>
       </table>
-     </div>
-     <div class="col-lg-6">
-       <h4>Directions:</h4>
-       <div #map id="gmap" class="img-responsive"></div>
-     </div>
+      </ng-template>
+      <ng-template #noDrivers>
+        <div class="row">
+          <div class="text-center col-lg-12">
+            <h2>No Drivers in Your Area</h2>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="col-lg-6">
+      <h4>Directions:</h4>
+      <div #map id="gmap" class="img-responsive"></div>
     </div>
   </div>
+</div>

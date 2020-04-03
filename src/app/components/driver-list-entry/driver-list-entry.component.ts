@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/models/user';
 
 @Component({
-  selector: 'app-driver-list-entry',
+  selector: '[app-driver-list-entry]',
   templateUrl: './driver-list-entry.component.html',
   styleUrls: ['./driver-list-entry.component.css']
 })

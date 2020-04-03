@@ -1,6 +1,6 @@
 <tr>
-    <td class="col">{{driver.name}}</td>
-    <td class="col">{{driver.car.seatsAvailable}}</td>
+    <td class="col">{{driver.firstName}}</td>
+    <td class="col">{{driver.car?.seatsAvailable}}</td>
     <td class="col">{{driver.ride.distance}}</td>
     <td class="col">{{driver.ride.duration}}</td>
     <td class="col">
@@ -31,4 +31,3 @@
             <div #maps id="gmap" class="img-responsive"></div>
         </div>
     </td>
-</tr>
