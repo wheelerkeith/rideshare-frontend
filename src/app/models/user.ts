@@ -1,7 +1,6 @@
 import { Batch } from './batch';
 import { Car } from './car';
 
-
 export class User {
 
     /**
