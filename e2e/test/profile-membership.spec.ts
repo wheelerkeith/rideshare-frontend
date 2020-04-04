@@ -17,6 +17,7 @@ describe('test membership form', () => {
     page.getLoginButton().click();
     element(by.id("login-form-username-input")).sendKeys("wviani");
     page.getLoginFormLoginButton().click();
+    browser.sleep(2000);
     page.getNavDropDown().click();
     browser.waitForAngularEnabled(false);
     page.getNavProfileA().click();
