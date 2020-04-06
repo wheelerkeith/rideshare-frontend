@@ -15,4 +15,18 @@ describe('navigation tests', function() {
         profilebuttonclicker.click();
         expect(element(by.id('profile-container-title')).getText()).toBe('Contact Information:');
     });
+
+    it('user can click on profile button', function() {
+        driverbuttonclicker.click();
+        profilebuttonclicker.click();
+        expect(element(by.id('profile-container-title')).getText()).toBe('Contact Information:');
+    });
+
+    afterEach(async () => {
+        // Assert that there are no errors emitted from the browser
+        const logs = await browser.manage().logs().get(logging.Type.BROWSER);
+        expect(logs).not.toContain(jasmine.objectContaining({
+          level: logging.Level.SEVERE,
+        } as logging.Entry));
+      });
 });

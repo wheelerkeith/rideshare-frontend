@@ -1,4 +1,3 @@
-
 <div class="container mainContainer">
     <i class="fa fa-user" style="font-family:'FontAwesome';"></i>
     <h4 id="profile-container-title">Contact Information:</h4>
@@ -40,10 +39,6 @@
                 <p *ngIf="fail != ''" class="error">{{ fail }}</p>
             </div>
         </div>
-        
-        <button type="submit" class="btn btn-primary myBtn" [disabled]="!myForm.form.valid">Save</button>
+        <button type="submit" id="profile-container-submit-btn" class="btn btn-primary myBtn" [disabled]="!myForm.form.valid">Save</button>
     </form>
 </div>
-  
-        
-    
