@@ -109,7 +109,6 @@ export class DriverListComponent implements OnInit {
         }
       );
   }
-
   showDriversOnMap(origin, drivers) {
     drivers.forEach(element => {
       var directionsService = new google.maps.DirectionsService;
@@ -120,7 +119,6 @@ export class DriverListComponent implements OnInit {
       this.displayRoute(origin, element.origin, directionsService, directionsRenderer);
     });
   }
-
 
   displayRoute(origin, destination, service, display) {
     service.route({
